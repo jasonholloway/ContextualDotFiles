@@ -2,10 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-
         <IsPackable>false</IsPackable>
-
-        <RootNamespace>EnvFiles.Tests</RootNamespace>
+        <RootNamespace>ContextualDotFiles.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\ContextualDotFiles\ContextualDotFiles.csproj" />
+      <ProjectReference Include="..\ContextualDotFiles\ContextualDotFiles.csproj" />
     </ItemGroup>
 
 </Project>
