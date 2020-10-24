@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -24,9 +25,8 @@ jobs:
     - name: Test
       run: dotnet test -c Release --no-restore --no-build -v normal
 
-  deploy:
+  publish:
     if: github.event_name == 'release'
-    needs: build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
