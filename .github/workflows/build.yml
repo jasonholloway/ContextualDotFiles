@@ -5,10 +5,11 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  release:
+    types: [ published ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -20,8 +21,25 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build -c Release --no-restore
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --no-build -v normal
+
+  deploy:
+    needs: build
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
     - name: Pack
-      run: dotnet pack --configuration Release --no-restore --no-build
+      run: |
+        arrTag=(${GITHUB_REF//\// })
+        VERSION="${arrTag[2]}"
+        VERSION="${VERSION//v}"
+        dotnet pack -c Release --no-restore --no-build --include-symbols --include-source -p:PackageVersion=$VERSION -o nupkg
+    - name: Push to NuGet
+      run: |
+        dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY 
