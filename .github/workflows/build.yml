@@ -59,3 +59,6 @@ jobs:
           --source $NUGET_FEED \
           --api-key $NUGET_KEY \
           --skip-duplicate
+      env:
+        NUGET_FEED: https://api.nuget.org/v3/index.json
+        NUGET_KEY: ${{ secrets.NUGET_KEY }}
