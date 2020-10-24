@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build -c Release --no-restore
     - name: Test
-      run: dotnet test --no-restore --no-build -v normal
+      run: dotnet test -c Release --no-restore --no-build -v normal
 
   deploy:
     needs: build
