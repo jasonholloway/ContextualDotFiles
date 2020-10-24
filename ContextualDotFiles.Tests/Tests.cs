@@ -69,7 +69,7 @@ namespace ContextualDotFiles.Tests
             {
                 using var reader = new StreamReader(stream);
                 var data = await reader.ReadToEndAsync();
-                return data.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
+                return data.Replace("\r\n", "\n").Split("\n", StringSplitOptions.RemoveEmptyEntries);
             }
         }
     }
