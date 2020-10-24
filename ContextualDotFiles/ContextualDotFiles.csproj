@@ -3,6 +3,13 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>ContextualDotFiles</RootNamespace>
+
+        <Description>Gathers and combines contextual dotfiles from a hierarchy of folders</Description>
+        <PackageTags>dotfiles;config;configuration;env</PackageTags>
+        <PackageProjectUrl>https://github.com/jasonholloway/ContextualDotFiles</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/jasonholloway/ContextualDotFiles</RepositoryUrl>
+        <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+        <Copyright>Copyright ©2020 Jason Holloway</Copyright>
     </PropertyGroup>
 
     <ItemGroup>
