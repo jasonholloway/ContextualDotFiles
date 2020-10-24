@@ -2,11 +2,11 @@ name: Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
   release:
-    types: [ published ]
+    types: [published]
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-    - name: Install dependencies
+    - name: Restore
       run: dotnet restore
     - name: Build
       run: dotnet build -c Release --no-restore
@@ -25,8 +25,8 @@ jobs:
       run: dotnet test -c Release --no-restore --no-build -v normal
 
   deploy:
-    needs: build
     if: github.event_name == 'release'
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -34,12 +34,28 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
+    - name: Restore
+      run: dotnet restore
+    - name: Build
+      run: dotnet build -c Release --no-restore
+    - name: Test
+      run: dotnet test -c Release --no-restore --no-build -v normal
     - name: Pack
       run: |
         arrTag=(${GITHUB_REF//\// })
         VERSION="${arrTag[2]}"
         VERSION="${VERSION//v}"
-        dotnet pack -c Release --no-restore --no-build --include-symbols --include-source -p:PackageVersion=$VERSION -o nupkg
+        dotnet pack \
+          -c Release \
+          --no-restore \
+          --no-build \
+          --include-symbols \
+          --include-source \
+          -p:PackageVersion=$VERSION \
+          -o nupkg
     - name: Push to NuGet
       run: |
-        dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY 
+        dotnet nuget push ./nupkg/*.nupkg \
+          --source $NUGET_FEED \
+          --api-key $NUGET_KEY \
+          --skip-duplicate
